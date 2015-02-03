@@ -1,0 +1,27 @@
+<%= content_for :header do %>
+    <h1><%= @artist.art_name %></h1>
+    <%= link_to "Artisti", artists_path, 'class' => 'ui-btn-right' %>
+<% end %>
+
+<div data-role="content">
+
+  <p>
+    <b>Nome:</b>
+    <%= @artist.name %>
+  </p>
+
+  <p>
+    <b>Cognome:</b>
+    <%= @artist.surname %>
+  </p>
+
+  <p>
+    <b>Biografia:</b>
+    <%= @artist.biography %>
+  </p>
+  <% if is_admin %>
+    <%= render :partial => 'layouts/resoruce_contorols',
+               :locals => { :res_name => "artista", :resource => @artist,
+                            :edit_res_path => edit_artist_path(@artist)} %>
+  <% end %>
+</div>

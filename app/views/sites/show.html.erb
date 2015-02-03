@@ -1,0 +1,27 @@
+<%= content_for :header do %>
+  <h1><%= @site.name %></h1>
+<% end %>
+
+<div data-role="content">
+    <p>
+      <b>Indirizzo:</b>
+      <%= @site.address %>
+    </p>
+
+    <p>
+      <b>Città:</b>
+      <%= @site.city %>
+    </p>
+
+    <p>
+      <b>Descrizione:</b>
+      <%= @site.description %>
+    </p>
+
+  <% if is_admin %>
+      <%= render :partial => 'layouts/resoruce_contorols',
+                 :locals => { :res_name => "location", :resource => @site,
+                              :edit_res_path => edit_site_path(@site)} %>
+  <% end %>
+
+</div>

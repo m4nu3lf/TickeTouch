@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  user: 
+  confirm_time: 2013-05-07 17:41:29
+
+two:
+  user: 
+  confirm_time: 2013-05-07 17:41:29

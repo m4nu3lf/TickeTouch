@@ -1,0 +1,19 @@
+<%= content_for :header do %>
+  <h1>Luoghi</h1>
+  <% if is_admin %>
+    <%= link_to "Add", new_site_path, "data-icon" => 'plus', "class" => "ui-btn-right" %>
+  <% end %>
+<% end %>
+
+<div data-role = "content">
+  <ul data-role = "listview">
+    <% @sites.each do |site| %>
+        <li>
+          <%= link_to site.name, site, :target => '_parent' %>
+          <% if is_admin %>
+            <%= link_to "Modifica luogo", edit_site_path(site), 'data-icon' => 'gear' %>
+          <% end %>
+        </li>
+    <% end %>
+  </ul>
+</div>

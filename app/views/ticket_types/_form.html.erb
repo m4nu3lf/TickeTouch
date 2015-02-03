@@ -1,0 +1,17 @@
+<%= form_for([@event, @stage, @stage.ticket_types.build]) do |f| %>
+    <div class = "field">
+      <%= f.label "Descrizione" %>
+      <%= f.text_field :description %>
+    </div>
+    <div class = "field">
+      <%= f.label "Prezzo" %>
+      <%= f.number_field :price %>
+    </div>
+    <div class = "field">
+      <%= f.label "Disponibilità posti" %>
+      <%= f.number_field :availability %>
+    </div>
+    <div class = "action">
+      <%= f.submit %>
+    </div>
+<% end %>

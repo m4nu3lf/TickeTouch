@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  site: 
+  description: MyText
+  time: 2013-05-07 17:19:06
+  place_number: 1
+
+two:
+  site: 
+  description: MyText
+  time: 2013-05-07 17:19:06
+  place_number: 1

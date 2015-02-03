@@ -1,0 +1,52 @@
+<% content_for :header do %>
+    <h1>Il tuo carrello</h1>
+<% end %>
+
+<div data-role="content">
+    <div class="ui-grid-a">
+            <% @cart.items.each do |item| %>
+                  <% stage = item.ticket_type.stage %>
+                  <div class="ui-block-a">
+                    <div data-role="collapsible" data-content-theme = "e" data-theme ="e" data-iconpos = "right"
+                         data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
+
+                      <%= render :partial => 'item', :locals => {:item => item} %>
+                    </div>
+                  </div>
+                  <div class="ui-block-b">
+                    <div data-role="grid-a">
+                        <% if item.available? %>
+                          <div class = "ui-block-a"  style = "text-align: center; color: green">
+                            Disponibile
+                          </div>
+                        <% else %>
+                          <div class = "ui-block-a"  style = "text-align: center; color: red">
+                            Non Disponibile
+                          </div>
+                        <% end %>
+                       <div class = "ui-block-b">
+                        <%= button_to "Rimuovi dal carrello", {:controller => :store, :action => :remove_from_cart,
+                                      :id => item.ticket_type.id}, "data-inline" => true, "data-icon" => "minus" %>
+                       </div>
+                    </div>
+                  </div>
+            <% end %>
+        </div>
+    </div>
+    <div data-theme = "e" data-content-theme = "e">
+      <div class = "ui-grid-c">
+        <div class = "ui-block-a"></div>
+        <div class = "ui-block-b"></div>
+        <div class = "ui-block-c"></div>
+        <div class = "ui-block-d" style = "text-align: center">
+            <b>Totale: € <%= @cart.total_price.to_s %> </b>
+        </div>
+      </div>
+    </div>
+  <% if @cart.available? %>
+    <%= button_to "Checkout", :action => :checkout %>
+  <% else %>
+    <%= button_to "Checkout", {:action => :checkout}, :disabled => :true%>
+  <% end %>
+  <%= button_to "Svuota carrello", :action => :empty_cart %>
+</div>

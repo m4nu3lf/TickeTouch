@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  event: 
+  site: 
+  place_avalaibility: 1
+  date_time: 2013-05-12 12:43:39
+
+two:
+  event: 
+  site: 
+  place_avalaibility: 1
+  date_time: 2013-05-12 12:43:39

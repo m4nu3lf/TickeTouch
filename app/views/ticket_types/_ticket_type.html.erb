@@ -1,0 +1,39 @@
+<p>
+
+<%= form_tag :controller => :store, :action => :add_to_cart, :id => ticket_type do %>
+    <div class = "ui-grid-c" >
+        <div class = "ui-block-a"><%= ticket_type.description %></div>
+        <div class = "ui-block-b"><%= "€ " + ticket_type.price.to_s %></div>
+
+        <div class = "ui-block-c">
+          <select name="ticket_num" id="ticket_num" data-inline = "true">
+            <option value="">  </option>
+            <%= options_for_select(1..[ticket_type.availability, 10].min()) %>
+          </select>
+         </div>
+
+
+      <div class = "ui-block-d" data-role = "controlgroup" data-type = "horizontal">
+        <% if ticket_type.availability > 0 %>
+            <%= submit_tag "Aggiungi al carrello" ,
+                           {:controller => :store, :action => :add_to_cart, :target => '_parent',
+                            "data-icon" => " cart", "data-mini" => "true", "data-inline" => "true"} %>
+        <% else %>
+            <%= submit_tag "Aggiungi al carrello" ,
+                           {:controller => :store, :action => :add_to_cart, :target => '_parent',
+                            "data-icon" => " cart", "data-mini" => "true", "data-inline" => "true",
+                            "disabled" => true} %>
+        <% end %>
+
+        <%=  if is_admin then link_to "Cancella tipologia", event_stage_ticket_type_path(@event, @stage, ticket_type),
+                                      confirm: 'Sei sicuro?', method: :delete, 'data-icon' => 'minus',
+                                      'data-role' => 'button', 'data-inline' => 'true', 'data-mini' => 'true' end  %>
+
+
+      </div>
+
+    </div>
+<% end %>
+
+
+</p>

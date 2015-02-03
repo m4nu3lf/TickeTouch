@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <title>Acquisto su TickeTouch</title>
+</head>
+
+<body>
+<%= image_tag "TickeTouch1.png" %>
+<p><b>Sig. <%= @user.name %></b></p>
+
+<p>Grazie per aver acquistato su TickeTouch</p>
+
+<p> Biglietti stampabili:</p>
+
+<div>
+  <% @purchase.tickets.each do |ticket| %>
+  <% stage = ticket.ticket_type.stage %>
+      <% ticket.quantity.times do |i| %>
+          <div style = "background-image: url(http://localhost:3000/assets/ticket_background.svg);
+                  width: 744px; height: 260px; background-repeat: no-repeat; position: relative">
+            <div style = "font-size: 32px; text-align: center; width:260px; height: 32px; position: absolute; top: 32px">
+              <%= stage.event.title %>
+            </div>
+            <div style = "position: absolute; left: 260px; top: 64px;">
+              Orario: <%= stage.date_time.to_s %> <br/><br/>
+              Location: <%= stage.site.name %>, <%= stage.site.address %>, Roma<br/><br/>
+              Tipologia: <%= ticket.ticket_type.description %> <br/><br/>
+              Posto: ---
+            </div>
+            <div style = "position: absolute; left: 620px; bottom: 32px;">
+              Prezzo: <%= "€ " + ticket.ticket_type.price.to_s %>
+            </div>
+            <div style = "position: absolute; left: 350px; bottom: 32px;">
+              COD: <%= ticket.key_code + i.to_s %>
+            </div>
+          </div>
+          -----------------------------------------------------------------------------------------------------------------------------
+      <% end %>
+  <% end %>
+</div>
+
+<br>
+<div>
+  Totale: <%= "€" + @purchase.total_price.to_s %>
+</div>
+<div>
+  id Acquisto: <%= @purchase.id.to_s %>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<%content_for :header do %>
+  <h1><%= @user.username %></h1>
+  <%= link_to "Home", "/", "class" => "ui-btn-right" %>
+<%end%>
+
+<div data-role = "content">
+    <p>
+      <b>Email:</b>
+      <%= @user.email %>
+    </p>
+
+    <p>
+      <b>Nome:</b>
+      <%= @user.name %>
+    </p>
+
+    <p>
+      <b>Cognome:</b>
+      <%= @user.surname %>
+    </p>
+
+    <p>
+      <b>Indirizzo:</b>
+      <%= @user.address %>
+    </p>
+
+    <p>
+      <b>Telefono:</b>
+      <%= @user.tel_number %>
+    </p>
+
+    <!--TODO show administrator notice only for admins -->
+    <p>
+      <b>Admin:</b>
+      <%= @user.admin %>
+    </p>
+
+  <%= render :partial => 'layouts/resoruce_contorols',
+             :locals => { :res_name => "account", :resource => @user,
+                          :edit_res_path => edit_user_path(@user)} %>
+</div>

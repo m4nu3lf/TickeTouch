@@ -1,0 +1,14 @@
+<% content_for :header do %>
+  <h1>Acquisti</h1>
+<% end %>
+
+<div data-role = "content">
+  <ul data-role = "listview">
+    <% @purchases.each do |purchase| %>
+        <li>
+          <%= link_to "Id: " + purchase.id.to_s + " Data: " + purchase.created_at.to_s, purchase_url(purchase),
+                      :target => '_parent' %>
+        </li>
+    <% end %>
+  </ul>
+</div>

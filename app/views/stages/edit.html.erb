@@ -1,0 +1,8 @@
+<%= content_for :header do %>
+  <h1>Modifica Tappa</h1>
+  <%= link_to "Torna all'evento", event_path(@event), "data-icon" => "home", "class" => "ui-btn-right" %>
+<% end %>
+
+<div data-role = "content">
+  <%= render 'form' %>
+</div>

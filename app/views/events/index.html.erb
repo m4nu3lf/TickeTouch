@@ -1,0 +1,163 @@
+<script src = "http://maps.googleapis.com/maps/api/js?
+&key=AIzaSyDnOMdS7JLtYl5zhi0yIRkZzaBfO3zWT4c&sensor=false&callback=initialize">
+</script>
+
+
+<% if !current_user.nil? %>
+    <script>
+
+        function Stage(title, position, site_name, address, date, time, url)
+        {
+            this.title = title;
+            this.position = position;
+            this.site_name = site_name;
+            this.address = address;
+            this.date = date;
+            this.time = time;
+            this.url = url;
+        }
+
+        var stages = new Array();
+
+        var geocoder;
+        var map;
+
+
+        function initialize() {
+            geocoder = new google.maps.Geocoder();
+            var latlng = new google.maps.LatLng(-34.397, 150.644);
+            var mapOptions = {
+                zoom: 8,
+                center: latlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+            map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+            codeAddress();
+            initStages();
+            putMarkers();
+        }
+
+
+        function putNearCircle(position, a, b)
+        {
+            var nearCircleOptions = {
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.35,
+                map: map,
+                center: position,
+                radius: ((a - b) * 0.5 + b) * 1000
+            };
+
+            var nearCircle = new google.maps.Circle(nearCircleOptions);
+        }
+
+
+        function initStages() {
+            var position;
+            var stage;
+            <% if !@stages.nil? %>
+                <% @stages.each do |stage| %>
+                    position =
+                            new google.maps.LatLng(<%= stage.site.latitude.to_s %>, <%= stage.site.longitude.to_s %>);
+                    stage = new Stage("<%= stage.event.title %>", position, "<%= stage.site.name %>",
+                                        "<%= stage.site.address + " " + stage.site.city %>",
+                                        "<%= stage.date_time.day%>-<%= stage.date_time.month%>-<%= stage.date_time.year%>",
+                                        "<%= stage.date_time.hour%>:<%= stage.date_time.min %>",
+                                        "<%= event_stage_url(stage.event_id, stage) %>");
+                    stages.push(stage);
+                <% end %>
+            <% end %>
+        }
+
+        function codeAddress() {
+            var address = "<%= current_user.address %>";
+            geocoder.geocode( { "address": address}, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    map.setCenter(results[0].geometry.location);
+                    map.setZoom(15);
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location,
+                        icon:  "/home-2.png",
+                        title: "Tu sei qui"
+                    });
+                    <% if params[:transport_type] == "by_foot" then %>
+                       <%= "putNearCircle(results[0].geometry.location, 0.5, 2);" %>
+                    <% else if params[:transport_type] == "by_car" then %>
+                        <%= "putNearCircle(results[0].geometry.location, 5, 20);" %>
+                    <% end %>
+                    <% end %>
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        }
+
+        function putMarkers() {
+            stages.forEach(function (stage)
+            {
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: stage.position,
+                    icon: "/music_live2.png",
+                    title: stage.title
+                });
+
+                var contentString = "<div id='content'>" +
+                                        "<a href=\"" + stage.url + "\">" +
+                                            "<b>" + stage.title + "</b>" +
+                                        "</a>" +
+                                        "<p> Luogo: " + stage.site_name + "</p>" +
+                                        "<p> Indirizzo: "+ stage.address + "</p>" +
+                                        "<p> Data e Ora: " + stage.date + ", " + stage.time + "</p>" +
+                                    "</div>";
+
+
+                var infowindow = new google.maps.InfoWindow({
+                            content: contentString
+                        });
+
+                google.maps.event.addListener(marker, 'click', function() {
+                    infowindow.open(map,marker);
+                });
+
+
+            });
+
+
+        }
+
+    </script>
+<% end %>
+
+<%= content_for :header do %>
+  <h1>Eventi</h1>
+  <% if is_admin %>
+    <%= link_to "Add", new_event_path, "data-icon" => 'plus', "class" => "ui-btn-right" %>
+  <% end %>
+<% end %>
+
+<div data-role = "content">
+  <p>
+      <ul data-role = "listview">
+        <% @events.each do |event| %>
+            <li>
+              <%= link_to event.title, event, :target => '_parent' %>
+              <% if is_admin %>
+                <%= link_to "Modifica evento", edit_event_path(event), 'data-icon' => 'gear' %>
+              <% end %>
+            </li>
+        <% end %>
+      </ul>
+  </p>
+
+  <% if params[:search_nearby] == "true" %>
+    <div id="map-canvas" style = "width: 100%; height: 400px"></div>
+  <% end %>
+</div>
+
+

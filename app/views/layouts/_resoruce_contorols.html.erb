@@ -1,0 +1,9 @@
+
+<div class="controlgroup" data-type = "horizontal">
+
+  <%= link_to "Elimina " + res_name, resource, confirm: 'Sei sicuro?', method: :delete, 'data-role'=>"button",
+              'data-mini'=>"true", 'data-inline'=>"true" %>
+
+  <%= link_to "Modifica " + res_name, edit_res_path, 'data-role'=>"button",
+              'data-mini'=>"true", 'data-inline'=>"true" %>
+</div>

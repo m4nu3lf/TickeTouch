@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  ticket_type: 
+  purchase: 
+
+two:
+  ticket_type: 
+  purchase: 

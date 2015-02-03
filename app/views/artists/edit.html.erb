@@ -1,0 +1,8 @@
+<%= content_for :header do %>
+  <h1>Modifica Artista</h1>
+  <%= link_to "Artisti", artists_path, "data-icon" => "home", "class" => "ui-btn-right" %>
+<% end %>
+
+<div data-role = "content">
+  <%= render 'form' %>
+</div>

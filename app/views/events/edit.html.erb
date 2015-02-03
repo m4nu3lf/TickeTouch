@@ -1,0 +1,8 @@
+<%= content_for :header do %>
+  <h1>Modifica Evento</h1>
+  <%= link_to "Eventi", events_path, "data-icon" => "home", "class" => "ui-btn-right" %>
+<% end %>
+
+<div data-role = "content">
+  <%= render 'form' %>
+</div>

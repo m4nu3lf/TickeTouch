@@ -1,0 +1,12 @@
+<% content_for :header do %>
+    <h1>Selezione Pagamento</h1>
+<% end %>
+
+<div data-role = "content">
+  <%= form_for @purchase, :url => {:controller => :store, :action => :confirm} do |f| %>
+    <%= f.label "Metodo di pagamento:"%>
+    <%= f.select :pay_type, options_for_select(Purchase::PAYMENT_TYPES),
+                                                :prompt => "Seleziona metodo di pagamento" %>
+    <%= f.submit "Conferma" %>
+  <% end %>
+</div>

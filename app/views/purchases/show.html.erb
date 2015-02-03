@@ -1,0 +1,96 @@
+<% content_for :header do %>
+    <h1>Acquisto <%= @purchase.id %></h1>
+<% end %>
+
+
+<div data-role="content">
+    <p>
+        <b>Acquisto effettuato da:</b>
+        <% unless @purchase.user.nil? %>
+        <%= link_to @purchase.user.username, user_path(@purchase.user_id) %>
+        <% else %>
+         Utente non più registrato
+        <% end %>
+        con id: <%= @purchase.user.id %>
+    <p>
+      <b>Effettuato il:</b>
+      <%= @purchase.created_at.to_formatted_s :rfc822 %>
+    </p>
+    <p>
+      <b>Totale:</b>
+      € <%= @purchase.total_price.to_s %>
+    </p>
+    <p>
+      <b>Pagato con:</b>
+      <%= Purchase::PAYMENT_TYPES.select{|name, val| val == @purchase.pay_type}[0][0] %>
+    </p>
+    <p>
+    <b>Dettagli Acquisto:</b>
+    <div class="ui-grid-d">
+      <div class="ui-block-a">
+        <div class="ui-bar ui-bar-e">Evento - Tappa</div>
+      </div>
+      <div class="ui-block-b">
+        <div class="ui-bar ui-bar-e">Tipologia biglietto</div>
+      </div>
+      <div class="ui-block-c">
+        <div class="ui-bar ui-bar-e">Codice</div>
+      </div>
+      <div class="ui-block-d">
+        <div class="ui-bar ui-bar-e">Quantità</div>
+      </div>
+      <div class="ui-block-e">
+        <div class="ui-bar ui-bar-e">Prezzo Totale</div>
+      </div>
+    </div>
+        <% @purchase.tickets.each do |ticket| %>
+              <div class="ui-grid-d">
+                <div class = "ui-block-a">
+                  <div class = "ui-body ui-body-c">
+                      <b>
+                          <% unless ticket.ticket_type.nil? %>
+                              <% stage = ticket.ticket_type.stage %>
+                              <%= link_to stage.event.title,
+                                  event_path(stage.event) %>
+                              a
+                              <%= link_to stage.site.name,
+                                        event_stage_path(stage.event, stage) %>
+                          <% else %>
+                              Dati non più in archivio
+                          <% end %>
+                      </b>
+                  </div>
+                </div>
+                <div class = "ui-block-c">
+                  <div class = "ui-body ui-body-c">
+                      <% unless ticket.ticket_type.nil? %>
+                          <%= ticket.ticket_type.description %>
+                      <% else %>
+                          Dati non più in archivio
+                      <% end %>
+                  </div>
+                </div>
+                <div class = "ui-block-d">
+                  <div class = "ui-body ui-body-c">
+                    <%= ticket.key_code.to_s %>
+                  </div>
+                </div>
+                <div class = "ui-block-b">
+                  <div class = "ui-body ui-body-c">
+                      <%= ticket.quantity.to_s %>
+                  </div>
+                </div>
+                <div class = "ui-block-e">
+                  <div class = "ui-body ui-body-c">
+                      <% unless ticket.ticket_type.nil? %>
+                          € <%= ticket.price.to_s %>
+                      <% else %>
+                          Dati non più in archivio
+                      <% end %>
+                  </div>
+                </div>
+              </div>
+        <% end %>
+        </p>
+    </p>
+</div>

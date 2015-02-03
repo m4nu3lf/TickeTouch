@@ -1,0 +1,90 @@
+<script type = "text/javascript" src = "http://maps.googleapis.com/maps/api/js?
+v=3&key=AIzaSyDnOMdS7JLtYl5zhi0yIRkZzaBfO3zWT4c&sensor=false&callback=initialize"></script>
+
+<script type = "text/javascript">
+    var geocoder;
+    var map;
+    function initialize() {
+        geocoder = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(-34.397, 150.644);
+        var mapOptions = {
+            zoom: 8,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        codeAddress();
+    }
+
+    function codeAddress() {
+        var address = "<%= @stage.site.address + ', ' + @stage.site.city %>";
+        geocoder.geocode( { "address": address}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                map.setCenter(results[0].geometry.location);
+                map.setZoom(15);
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location
+                });
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+    }
+</script>
+
+
+<%= content_for :header do %>
+  <h1><%= @event.title + " " %></h1>
+  <%= link_to "Evento", event_path(@event), "class" => "ui-btn-right" %>
+<% end %>
+
+<div data-role="content">
+    <p>
+      <b>Località:</b>
+      <%= @stage.site.name + ", " + @stage.site.city + " ," + @stage.site.address %>
+    </p>
+
+    <p>
+      <b>Data:</b>
+      <%= @stage.date_time.day%>-<%= @stage.date_time.month%>-<%= @stage.date_time.year%>
+    </p>
+
+    <p>
+      <b>Ora:</b>
+      <%= @stage.date_time.hour%>:<%= @stage.date_time.min %>
+    </p>
+
+    <p>
+      <ul data-role="listview" data-inset="true" data-theme="d" data-divider-theme="e" data-count-theme="b">
+        <li data-role="list-divider">
+          <div class = "ui-grid-c" >
+            <div class = "ui-block-a"><em>Descrizione</em></div>
+            <div class = "ui-block-b"><em>Prezzo</em></div>
+            <div class = "ui-block-c"><em>Numero</em></div>
+          </div>
+        </li>
+      </ul>
+      <br />
+      <%= render @stage.ticket_types %>
+    </p>
+
+    <% if is_admin %>
+        <p>
+          <b> Aggiungi Tipologia </b>
+          <%= render "ticket_types/form" %>
+        </p>
+    <% end %>
+
+    <p id="site_map">
+      <b> Mappa del luogo: </b>
+      <div id="map-canvas" style = "width: 100%; height: 400px"></div>
+    </p>
+
+  <% if is_admin %>
+      <%= render :partial => 'layouts/resoruce_contorols',
+                 :locals => { :res_name => "tappa", :resource => event_stage_path(@stage.event_id, @stage),
+                              :edit_res_path => edit_event_stage_path(@stage.event_id, @stage)} %>
+  <% end %>
+
+</div>

@@ -1,0 +1,8 @@
+<li>
+  <%= link_to artist.art_name, artist_path(artist), :target => '_parent' %>
+  <% if is_admin %>
+        <%= link_to "Cancella artista", events_path + "/remove_artist?event_id=" +
+                @event.id.to_s + "&artist_id=" + artist.id.to_s, confirm: 'Sei sicuro?',
+                    :method => :get, 'data-icon' => 'minus' %>
+  <% end %>
+</li>

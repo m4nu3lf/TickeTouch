@@ -1,0 +1,40 @@
+<% content_for :header do %>
+    <h1>Riepilogo Acquisto</h1>
+<% end %>
+
+<div data-role="content">
+
+    <% @cart.items.each do |item| %>
+        <div data-content-theme = "e" data-theme ="e" data-iconpos = "right"
+               data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
+
+        <%= render :partial => 'item', :locals => {:item => item} %>
+
+        </div>
+    <% end %>
+
+  <div data-theme = "e" data-content-theme = "e">
+    <div class = "ui-grid-c">
+      <div class = "ui-block-a"></div>
+      <div class = "ui-block-b"></div>
+      <div class = "ui-block-c"></div>
+      <div class = "ui-block-d" style = "text-align: center">
+        <b>Totale: € <%= @cart.total_price.to_s %> </b>
+      </div>
+    </div>
+  </div>
+
+  <div data-theme = "e" data-content-theme = "e">
+    <div class = "ui-grid-c">
+      <div class = "ui-block-a"></div>
+      <div class = "ui-block-b"></div>
+      <div class = "ui-block-c"></div>
+      <div class = "ui-block-d" style = "text-align: center">
+        <b>Metodo di pagamento: <%= Purchase::PAYMENT_TYPES.select{|name, val| val == @purchase.pay_type}[0][0] %> </b>
+      </div>
+    </div>
+  </div>
+
+  <%= button_to "Conferma", :action => :save_purchase, :controller => :store,
+                :purchase => params[:purchase] %>
+</div>

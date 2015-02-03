@@ -1,0 +1,25 @@
+<%= form_for([@event, @stage]) do |f| %>
+  <% if @stage.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@stage.errors.count, "error") %> prohibited this stage from being saved:</h2>
+
+      <ul>
+      <% @stage.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label "Luogo" %><br />
+    <%= f.select(:site_id, options_from_collection_for_select(Site.all, :id, :name)) %>
+  </div>
+  <div class="field">
+    <%= f.label "Data e ora" %><br />
+    <%= f.datetime_select :date_time %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

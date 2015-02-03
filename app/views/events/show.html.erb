@@ -1,0 +1,69 @@
+<%= content_for :header do %>
+  <h1><%= @event.title %></h1>
+  <div data-role = "controlgroup" data-type = "horizontal" class = "ui-btn-right">
+      <% if is_admin %>
+        <%= link_to "Aggiungi tappa", new_event_stage_path(@event),"data-icon" => "plus", "data-role" => "button"%>
+      <% end %>
+  </div>
+<% end %>
+
+<div data-role="content">
+
+
+
+  <p>
+      <b>Artisti evento</b>
+      <ul data-role = "listview">
+        <br/>
+        <%= render @event.artists %>
+      </ul>
+  </p>
+
+  <% if is_admin %>
+  <br/>
+  <br/>
+      <p>
+          <b>Aggiungi artista</b>
+          <%= form_tag({:action => :add_artist, :controller => :events}, :method => :post) do %>
+            <%= select_tag(:artist_id, options_from_collection_for_select(Artist.all, :id, :art_name ),
+                           :prompt => "Seleziona l'artista dell'evento" ) %>
+            <%= hidden_field_tag(:event_id, @event.id) %>
+            <%= submit_tag("Aggiungi artista") %>
+          <% end %>
+      </p>
+  <% end %>
+
+  <br/><br/>
+
+  <p>
+      <b>Tappe evento</b>
+      <ul data-role = "listview">
+        <br/>
+        <% @event.stages.each do |stage| %>
+            <li>
+              <%= link_to @event.title + "  " + stage.site.city + "  " + stage.site.name,
+                          event_stage_path(stage.event, stage) , :target => '_parent' %>
+              <% if is_admin %>
+                <%= link_to "Modifica tappa", edit_event_stage_path(stage.event, stage), 'data-icon' => 'gear' %>
+              <% end %>
+            </li>
+        <% end %>
+      </ul>
+  </p>
+
+  <br/>
+
+
+    <p>
+      <b>Descrizione:</b>
+      <%= @event.description %>
+    </p>
+
+
+  <% if is_admin %>
+      <%= render :partial => 'layouts/resoruce_contorols',
+                 :locals => { :res_name => "evento", :resource => @event,
+                              :edit_res_path => edit_event_path(@event)} %>
+  <% end %>
+
+</div>

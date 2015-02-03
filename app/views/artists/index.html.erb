@@ -1,0 +1,19 @@
+<%= content_for :header do %>
+  <h1>Artisti</h1>
+  <% if is_admin %>
+        <%= link_to "Add", new_artist_path, "data-icon" => 'plus', "class" => "ui-btn-right" %>
+  <% end %>
+<% end %>
+
+<div data-role = "content">
+  <ul data-role = "listview">
+    <% @artists.each do |artist| %>
+        <li>
+          <%= link_to artist.art_name, artist, :target => '_parent' %>
+          <% if is_admin %>
+                <%= link_to "Modifica artista", edit_artist_path(artist), 'data-icon' => 'gear'%>
+          <% end %>
+        </li>
+    <% end %>
+  </ul>
+</div>

@@ -1,0 +1,17 @@
+<% stage = item.ticket_type.stage %>
+<h3>
+  <%= item.quantity %>
+  &times;
+  <%= item.ticket_type.stage.event.title %>
+</h3>
+<p> Evento: <%= link_to stage.event.title, event_stage_path(stage.event, stage) %> </p>
+<p> Luogo: <%= item.ticket_type.stage.site.name %> </p>
+<p> Indirizzo: <%= stage.site.address %>
+  <%= stage.site.city %>
+</p>
+<p> Data e Ora: <%= stage.date_time.day%>-
+  <%= stage.date_time.month%>-
+  <%= stage.date_time.year%>,
+
+  <%= stage.date_time.hour%>:<%= stage.date_time.min %>
+</p>
